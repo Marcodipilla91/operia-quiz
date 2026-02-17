@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="it">
+
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-P7T9YBB1H9"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag() { dataLayer.push(arguments); }
+        gtag('js', new Date());
+
+        gtag('config', 'G-P7T9YBB1H9');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analisi Maturità ESG | Operia</title>
+    <meta name="description"
+        content="Assessment gratuito per scoprire il livello di maturità ESG della tua azienda e ricevere un piano d'azione strategico.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/confetti-js@0.0.18/dist/index.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --operia-yellow: #FBC02D;
+            --operia-green: #4CAF50;
+            --operia-bg: #F8F9FA;
+            --operia-card: #FFFFFF;
+            --operia-text: #263238;
+            --operia-text-light: #546E7A;
+            --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.08);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: var(--operia-bg);
+            color: var(--operia-text);
+            min-height: 100vh;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- HEADER & HERO --- */
+        .header {
+            background: white;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            display: flex;
+            justify-content: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            font-weight: 800;
+            font-size: 1.5rem;
+            color: var(--operia-text);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo span {
+            color: var(--operia-yellow);
+        }
+
+        .hero {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .founder-badge {
+            display: inline-flex;
+            align-items: center;
+            background: white;
+            padding: 8px 16px 8px 8px;
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 2rem;
+            gap: 12px;
+            border: 1px solid #eee;
+        }
+
+        .founder-img {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--operia-yellow);
+        }
+
+        .founder-text {
+            text-align: left;
+            font-size: 0.85rem;
+            line-height: 1.2;
+        }
+
+        .founder-name {
+            font-weight: 700;
+            display: block;
+        }
+
+        .founder-role {
+            color: var(--operia-text-light);
+            font-size: 0.75rem;
+        }
+
+        .hero h1 {
+            font-size: 2.2rem;
+            line-height: 1.25;
+            margin-bottom: 1rem;
+            font-weight: 800;
+        }
+
+        .highlight {
+            background: linear-gradient(120deg, rgba(251, 192, 45, 0.3) 0%, rgba(251, 192, 45, 0.3) 100%);
+            background-repeat: no-repeat;
+            background-size: 100% 0.4em;
+            background-position: 0 88%;
+        }
+
+        /* --- QUIZ CONTAINER --- */
+        .quiz-container {
+            max-width: 600px;
+            margin: 0 auto 4rem;
+            width: 95%;
+            position: relative;
+        }
+
+        .quiz-card {
+            background: var(--operia-card);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: var(--shadow-card);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Progress Bar */
+        .progress-wrapper {
+            margin-bottom: 2rem;
+        }
+
+        .progress-bg {
+            background: #eee;
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--operia-yellow);
+            width: 0%;
+            transition: width 0.5s ease;
+        }
+
+        .step-count {
+            text-align: right;
+            font-size: 0.8rem;
+            color: var(--operia-text-light);
+            margin-top: 5px;
+            font-weight: 500;
+        }
+
+        /* Questions */
+        .question-step {
+            display: none;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .question-step.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .q-title {
+            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .options-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .option-card {
+            border: 2px solid #eee;
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 500;
+        }
+
+        .option-card:hover {
+            border-color: var(--operia-yellow);
+            background: rgba(251, 192, 45, 0.05);
+            transform: translateY(-2px);
+        }
+
+        .option-card.selected {
+            border-color: var(--operia-green);
+            background: rgba(76, 175, 80, 0.05);
+            color: var(--operia-green);
+        }
+
+        .option-radio {
+            accent-color: var(--operia-green);
+            width: 18px;
+            height: 18px;
+        }
+
+        /* --- LEAD FORM --- */
+        .lead-form {
+            text-align: center;
+        }
+
+        .lead-title {
+            font-size: 1.6rem;
+            margin-bottom: 0.5rem;
+            color: var(--operia-text);
+        }
+
+        .lead-subtitle {
+            color: var(--operia-text-light);
+            margin-bottom: 2rem;
+            font-size: 0.95rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+            text-align: left;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #eee;
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--operia-yellow);
+            box-shadow: 0 0 0 4px rgba(251, 192, 45, 0.1);
+        }
+
+        .btn-submit {
+            background: var(--operia-green);
+            color: white;
+            border: none;
+            padding: 16px 32px;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 1rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+            background: #43a047;
+        }
+
+        .privacy-note {
+            font-size: 0.75rem;
+            color: #999;
+            margin-top: 1rem;
+            line-height: 1.4;
+        }
+
+        /* --- RESULTS PAGE --- */
+        .results-view {
+            display: none;
+            text-align: center;
+        }
+
+        .score-badge {
+            background: var(--operia-yellow);
+            color: var(--operia-text);
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 0.9rem;
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .persona-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            color: var(--operia-text);
+        }
+
+        .persona-desc {
+            color: var(--operia-text-light);
+            margin-bottom: 2.5rem;
+        }
+
+        .action-box {
+            background: #f0f7ff;
+            border: 2px solid #cce4ff;
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: left;
+            margin-bottom: 2rem;
+        }
+
+        .action-title {
+            color: #0056b3;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist li {
+            position: relative;
+            padding-left: 30px;
+            margin-bottom: 12px;
+            font-size: 0.95rem;
+        }
+
+        .checklist li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: var(--operia-green);
+            font-weight: 800;
+        }
+
+        .cta-btn {
+            background: var(--operia-text);
+            color: white;
+            text-decoration: none;
+            display: block;
+            padding: 18px;
+            border-radius: 12px;
+            font-weight: 600;
+            transition: var(--transition);
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        /* Loading Spinner */
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid var(--operia-yellow);
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Hero Layout Styles */
+        .hero {
+            padding: 1rem 2rem 2rem 2rem;
+            /* Reduced top padding significantly */
+            max-width: 1300px;
+            /* Wider container */
+            margin: 0 auto;
+            min-height: 80vh;
+            /* Ensure it takes minimal height but allows content to fit */
+            display: flex;
+            align-items: center;
+        }
+
+        .hero-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 2rem;
+            /* Reduced gap */
+            width: 100%;
+        }
+
+        .hero-content {
+            flex: 1;
+            text-align: left;
+            /* Force left align on desktop */
+            max-width: 550px;
+        }
+
+        /* Hero Image Styles */
+        .hero-visual {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .hero-dashboard-img {
+            max-width: 100%;
+            /* Responsive */
+            width: 550px;
+            /* Fixed optimal width for compact view */
+            height: auto;
+            border-radius: 12px;
+            box-shadow: 0 20px 50px -12px rgba(0, 0, 0, 0.2), 0 0 0 1px rgba(0, 0, 0, 0.05);
+            background: white;
+            /* Optional: Add slight tilt for dynamism */
+            transform: perspective(1000px) rotateY(-5deg) rotateX(2deg);
+            transition: transform 0.3s ease;
+        }
+
+        .hero-dashboard-img:hover {
+            transform: perspective(1000px) rotateY(0deg) rotateX(0deg);
+            /* Flatten on hover */
+        }
+
+        /* Floating Animation */
+        @keyframes float {
+            0% {
+                transform: translateY(0px);
+            }
+
+            50% {
+                transform: translateY(-15px);
+            }
+
+            100% {
+                transform: translateY(0px);
+            }
+        }
+
+        /* Mobile responsiveness */
+        @media (max-width: 900px) {
+            .hero-container {
+                flex-direction: column;
+                text-align: center;
+                gap: 3rem;
+            }
+
+            .hero-content {
+                text-align: center;
+                margin: 0 auto;
+            }
+
+            .hero-content div[style*="justify-content: flex-start"] {
+                justify-content: center !important;
+            }
+
+            .hero-dashboard-img {
+                max-width: 100%;
+                transform: none;
+                /* No tilt on mobile */
+            }
+
+            h1 {
+                font-size: 2rem !important;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- Header -->
+    <!-- Header Banner -->
+    <!-- Header -->
+    <header class="header">
+        <div class="logo">
+            <img src="./operia-beboost-logo.png" alt="Operia Powered by Be-Boost" style="height: 75px; width: auto;">
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="hero" id="mainHero">
+        <div class="hero-container">
+            <!-- Left Column: Text -->
+            <div class="hero-content">
+                <div class="founder-badge">
+                    <img src="./marco-profilo.jpg" alt="Marco Di Pilla" class="founder-img">
+                    <div class="founder-text">
+                        <span class="founder-name">Marco Di Pilla</span>
+                        <span class="founder-role">Founder Operia · Green Economy Award 🏆</span>
+                    </div>
+                </div>
+
+                <h1
+                    style="font-size: 2.2rem; font-weight: 800; line-height: 1.15; margin-bottom: 1rem; color: #263238;">
+                    Smetti di rincorrere i dati ESG su Excel.
+                    <span
+                        style="background: linear-gradient(120deg, var(--operia-yellow) 0%, #FFD54F 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; position: relative; display: inline-block;">
+                        Automatizza la Sostenibilità.
+                        <svg width="100%" height="10" viewBox="0 0 200 9" fill="none" xmlns="http://www.w3.org/2000/svg"
+                            style="position: absolute; bottom: -1px; left: 0; z-index: -1;">
+                            <path d="M2.00025 6.99997C48.5005 3.00002 120.003 -1.99992 198.006 3.99998" stroke="#FBC02D"
+                                stroke-width="3" stroke-linecap="round" stroke-opacity="0.4" />
+                        </svg>
+                    </span>
+                </h1>
+
+                <p style="color: #546E7A; margin-bottom: 1.5rem; font-size: 1rem; max-width: 550px; line-height: 1.5;">
+                    Scopri in 2 minuti il tuo livello di maturità ESG e sblocca l'accesso esclusivo alla <b>Versione
+                        Free di
+                        Operia</b> per digitalizzare subito la tua raccolta dati.
+                </p>
+
+                <div
+                    style="display: flex; gap: 1rem; justify-content: flex-start; margin-bottom: 2rem; flex-wrap: wrap;">
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #455a64;">
+                        <span style="color: var(--operia-green);">✓</span> Piano d'azione personalizzato
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #455a64;">
+                        <span style="color: var(--operia-green);">✓</span> Identikit aziendale ESG
+                    </div>
+                    <div style="display: flex; align-items: center; gap: 8px; font-size: 0.9rem; color: #455a64;">
+                        <span style="color: var(--operia-green);">✓</span> 100% Gratuito
+                    </div>
+                </div>
+
+                <button class="btn-submit"
+                    style="width: auto; padding: 18px 48px; box-shadow: 0 10px 25px rgba(251, 192, 45, 0.4);"
+                    onclick="startQuiz()">
+                    Inizia Ora →
+                </button>
+                <p style="font-size: 0.8rem; color: #999; margin-top: 1rem;">Richiede meno di 60 secondi</p>
+            </div>
+
+            <!-- Right Column: Image -->
+            <div class="hero-visual">
+                <img src="./operia-dashboard.png" alt="Operia ESG Dashboard" class="hero-dashboard-img">
+            </div>
+        </div>
+    </main>
+
+    <div class="quiz-container" id="quizInterface" style="display: none;">
+        <div class="quiz-card">
+
+            <!-- Progress -->
+            <div class="progress-wrapper">
+                <div class="progress-bg">
+                    <div class="progress-bar" id="progressBar"></div>
+                </div>
+                <div class="step-count">Domanda <span id="currentStepNum">1</span> di 5</div>
+            </div>
+
+            <!-- Q1 -->
+            <div class="question-step active" data-step="1">
+                <h2 class="q-title">Qual è il tuo ruolo principale?</h2>
+                <div class="options-grid">
+                    <label class="option-card" onclick="selectOption(this, 1)">
+                        <input type="radio" name="role" value="Sustainability Manager" class="option-radio">
+                        Sustainability Manager / ESG Lead
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 1)">
+                        <input type="radio" name="role" value="CEO/Titolare" class="option-radio">
+                        CEO / Titolare
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 1)">
+                        <input type="radio" name="role" value="Responsabile Funzionale" class="option-radio">
+                        Responsabile Funzionale (HR, Finance, HSE)
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 1)">
+                        <input type="radio" name="role" value="Consulente" class="option-radio">
+                        Consulente Esterno
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q2 -->
+            <div class="question-step" data-step="2">
+                <h2 class="q-title">Dimensioni dell'azienda (FTE)</h2>
+                <div class="options-grid">
+                    <label class="option-card" onclick="selectOption(this, 2)">
+                        <input type="radio" name="size" value=">250" class="option-radio">
+                        Oltre 250 dipendenti
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 2)">
+                        <input type="radio" name="size" value="50-249" class="option-radio">
+                        50 - 249 dipendenti
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 2)">
+                        <input type="radio" name="size" value="<50" class="option-radio">
+                        Meno di 50 dipendenti
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q3 -->
+            <div class="question-step" data-step="3">
+                <h2 class="q-title">Qual è la tua sfida più grande oggi?</h2>
+                <div class="options-grid">
+                    <label class="option-card" onclick="selectOption(this, 3)">
+                        <input type="radio" name="pain" value="Excel Chaos" class="option-radio">
+                        📊 Rincorrere dati su Excel sparsi
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 3)">
+                        <input type="radio" name="pain" value="Regulations" class="option-radio">
+                        ⚖️ Complessità normativa (CSRD)
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 3)">
+                        <input type="radio" name="pain" value="Supply Chain" class="option-radio">
+                        🔗 Raccogliere dati dai fornitori
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 3)">
+                        <input type="radio" name="pain" value="Strategy" class="option-radio">
+                        💰 Dimostrare il valore strategico (non solo costi)
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q4 -->
+            <div class="question-step" data-step="4">
+                <h2 class="q-title">Cosa vorresti risolvere subito?</h2>
+                <div class="options-grid">
+                    <label class="option-card" onclick="selectOption(this, 4)">
+                        <input type="radio" name="goal" value="Digitalization" class="option-radio">
+                        Digitalizzare e automatizzare i dati
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 4)">
+                        <input type="radio" name="goal" value="Certification" class="option-radio">
+                        Ottenere Certificazioni / Bilancio
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 4)">
+                        <input type="radio" name="goal" value="SupplyChain" class="option-radio">
+                        Qualificare la filiera fornitori
+                    </label>
+                </div>
+            </div>
+
+            <!-- Q5 -->
+            <div class="question-step" data-step="5">
+                <h2 class="q-title">Livello di maturità attuale</h2>
+                <div class="options-grid">
+                    <label class="option-card" onclick="selectOption(this, 5)">
+                        <input type="radio" name="mature" value="Low" class="option-radio">
+                        Iniziale (Nessun report strutturato)
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 5)">
+                        <input type="radio" name="mature" value="Mid" class="option-radio">
+                        In crescita (Facciamo report ma è manuale)
+                    </label>
+                    <label class="option-card" onclick="selectOption(this, 5)">
+                        <input type="radio" name="mature" value="High" class="option-radio">
+                        Avanzato (Abbiamo già software/certificazioni)
+                    </label>
+                </div>
+            </div>
+
+            <!-- LEAD FORM STEP -->
+            <div class="question-step lead-form" id="leadFormStep">
+                <div class="founder-badge" style="margin-bottom: 1rem;">
+                    <img src="./marco-profilo.jpg" alt="Marco" class="founder-img">
+                    <span class="founder-name" style="font-size:0.9rem">Marco Di Pilla</span>
+                </div>
+
+                <h2 class="lead-title">Il tuo profilo è pronto! 🎉</h2>
+                <p class="lead-subtitle">Inserisci i tuoi dati per sbloccare il risultato e ricevere il template del
+                    piano d'azione.</p>
+
+                <!-- FORMSPREE INTEGRATION PLACEHOLDER -->
+                <!-- Per renderlo funzionante in produzione:
+                     1. Vai su https://formspree.io
+                     2. Crea un nuovo form
+                     3. Sostituisci l'URL in 'action' con il tuo URL Formspree
+                -->
+                <form id="contactForm" action="https://formspree.io/f/xgolyzpa" method="POST"
+                    onsubmit="handleFormSubmit(event)">
+                    <div class="form-group">
+                        <label class="form-label">Nome Azienda</label>
+                        <input type="text" name="company" class="form-input" required placeholder="Es. Operia Srl">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Email Aziendale</label>
+                        <input type="email" name="email" class="form-input" required placeholder="nome@azienda.it">
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Telefono (Opzionale)</label>
+                        <input type="tel" name="phone" class="form-input" placeholder="+39 333...">
+                    </div>
+
+                    <!-- Hidden fields to store quiz answers -->
+                    <input type="hidden" name="quiz_role" id="input_role">
+                    <input type="hidden" name="quiz_size" id="input_size">
+                    <input type="hidden" name="quiz_pain" id="input_pain">
+                    <input type="hidden" name="quiz_goal" id="input_goal">
+                    <input type="hidden" name="quiz_mature" id="input_mature">
+
+                    <button type="submit" class="btn-submit">
+                        <span id="btnText">Sblocca il mio Profilo</span>
+                        <div class="loader" id="btnLoader"></div>
+                    </button>
+                </form>
+
+                <div class="form-group" style="display:flex; align-items:start; gap:10px; margin-top:1rem;">
+                    <input type="checkbox" name="gdpr" id="gdpr_check" required
+                        style="margin-top:4px; accent-color:var(--operia-green);">
+                    <label for="gdpr_check" style="font-size:0.8rem; color:#666; text-align:left; line-height:1.4;">
+                        Acconsento al trattamento dei dati personali e accetto di ricevere comunicazioni da Operia in
+                        conformità con la <a href="#" style="color:#666; text-decoration:underline;">Privacy Policy</a>.
+                    </label>
+                </div>
+
+                <p class="privacy-note">
+                    I tuoi dati sono al sicuro. Riceverai consigli, nuovi strumenti e contenuti. <br>
+                    Nessuno spam, promesso.
+                </p>
+            </div>
+
+            <!-- RESULTS STEP -->
+            <div class="results-view" id="resultsStep">
+                <canvas id="confetti-canvas"
+                    style="position: absolute; top:0; left:0; width:100%; height:100%; pointer-events:none;"></canvas>
+
+                <div class="score-badge">Profilo Identificato</div>
+                <h2 class="persona-title" id="resTitle">Strategic Leader</h2>
+                <p class="persona-desc" id="resDesc">Hai una visione chiara ma gli strumenti attuali ti rallentano.</p>
+
+                <div class="action-box">
+                    <h3 class="action-title">🚀 Il Tuo Piano d'Azione</h3>
+                    <ul class="checklist" id="resList">
+                        <li>Digitalizzare la raccolta dati per eliminare Excel</li>
+                        <li>Configurare KPI automatici in dashboard</li>
+                        <li>Audit della catena di fornitura</li>
+                    </ul>
+                </div>
+
+                <div
+                    style="background: #FFF8E1; border: 2px solid #FFECB3; padding: 1.5rem; border-radius: 12px; margin-bottom: 2rem;">
+                    <h3
+                        style="color: #FBC02D; font-size: 1.1rem; margin-bottom: 0.5rem; display: flex; align-items: center; justify-content: center; gap: 8px;">
+                        <span>🎁</span> Premio Esclusivo Completamento Quiz
+                    </h3>
+                    <p style="font-size: 0.95rem; margin-bottom: 1.5rem; color: #555;">
+                        Poiché hai completato il questionario, Marco ha riservato per te uno slot per attivare la
+                        <b>Versione Gratuita di Operia</b> e iniziare subito a digitalizzare i tuoi dati.
+                    </p>
+                    <a href="https://app.lemcal.com/@marcodipilla/30-minute" target="_blank" class="cta-btn"
+                        style="background: var(--operia-green); box-shadow: 0 4px 15px rgba(76, 175, 80, 0.4);">
+                        Attiva Operia Gratis con Marco →
+                    </a>
+                    <p style="margin-top:0.8rem; font-size:0.8rem; color:#888;">⚠️ Offerta valida solo per questo
+                        accesso</p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // State
+        const answers = {};
+        let currentStep = 1;
+        const totalSteps = 5;
+
+        function startQuiz() {
+            document.getElementById('mainHero').style.display = 'none';
+            document.getElementById('quizInterface').style.display = 'block';
+            updateProgress();
+        }
+
+        function selectOption(element, step) {
+            // Visual selection
+            const group = element.parentElement.querySelectorAll('.option-card');
+            group.forEach(el => el.classList.remove('selected'));
+            element.classList.add('selected');
+
+            // Get value
+            const input = element.querySelector('input');
+            input.checked = true;
+
+            // Save answer mapping
+            const keys = ['role', 'size', 'pain', 'goal', 'mature'];
+            answers[keys[step - 1]] = input.value;
+
+            // Auto advance
+            setTimeout(() => {
+                if (step < totalSteps) {
+                    showStep(step + 1);
+                } else {
+                    showLeadForm();
+                }
+            }, 400);
+        }
+
+        function showStep(step) {
+            document.querySelectorAll('.question-step').forEach(el => el.classList.remove('active'));
+            document.querySelector(`.question-step[data-step="${step}"]`).classList.add('active');
+            currentStep = step;
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const pct = (currentStep / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = `${pct}%`;
+            document.getElementById('currentStepNum').innerText = currentStep;
+        }
+
+        function showLeadForm() {
+            // Hide questions, show form
+            document.querySelectorAll('.question-step').forEach(el => el.classList.remove('active'));
+            document.querySelector('.progress-wrapper').style.display = 'none';
+            document.getElementById('leadFormStep').style.display = 'block';
+
+            // Populate hidden inputs for Formspree
+            document.getElementById('input_role').value = answers.role;
+            document.getElementById('input_size').value = answers.size;
+            document.getElementById('input_pain').value = answers.pain;
+            document.getElementById('input_goal').value = answers.goal;
+            document.getElementById('input_mature').value = answers.mature;
+        }
+
+        function handleFormSubmit(e) {
+            e.preventDefault();
+
+            // Simulate loading
+            const btnText = document.getElementById('btnText');
+            const btnLoader = document.getElementById('btnLoader');
+            btnText.style.display = 'none';
+            btnLoader.style.display = 'block';
+
+            // Extract contact info for display or console
+            const formData = new FormData(e.target);
+            const contactInfo = Object.fromEntries(formData.entries());
+            console.log("Lead captured:", contactInfo);
+
+            // In a real scenario with Formspree, you would do:
+            // fetch(e.target.action, { method: 'POST', body: formData, headers: {'Accept': 'application/json'} })
+
+            // Simulating API delay
+            setTimeout(() => {
+                calculateResults();
+                document.getElementById('leadFormStep').style.display = 'none';
+                document.getElementById('resultsStep').style.display = 'block';
+
+                // Trigger Confetti
+                const confettiSettings = { target: 'confetti-canvas' };
+                const confetti = new ConfettiGenerator(confettiSettings);
+                confetti.render();
+            }, 1000);
+        }
+
+        function calculateResults() {
+            // Simple logic for prototype
+            let persona = "Explorer";
+            let title = "Explorer Digitale";
+            let desc = "Stai iniziando il percorso. È il momento perfetto per partire con il piede giusto.";
+            let tasks = [
+                "Completare l'onboarding sulla piattaforma Operia",
+                "Mappare i primi dati base (Energy, Waste)",
+                "Pianificare il primo report di sostenibilità"
+            ];
+
+            // Logic Overrides
+            if (answers.size === '>250' || answers.pain === 'Regulations') {
+                persona = "ComplianceHero";
+                title = "Compliance Hero";
+                desc = "Hai obblighi normativi stringenti. La priorità è la sicurezza del dato.";
+                tasks = [
+                    "Attivare il modulo Doppia Materialità",
+                    "Importare dati storici per gap analysis CSRD",
+                    "Creare workflow di approvazione dati"
+                ];
+            } else if (answers.pain === 'Excel Chaos' || answers.goal === 'Digitalization') {
+                persona = "StrategicLeader";
+                title = "Innovation Leader";
+                desc = "Vuoi efficienza e controllo. Excel non basta più per le tue ambizioni.";
+                tasks = [
+                    "Migrare i file Excel in database strutturato Operia",
+                    "Impostare dashboard KPI automatiche",
+                    "Coinvolgere i data owner con accessi dedicati"
+                ];
+            } else if (answers.pain === 'Supply Chain' || answers.goal === 'SupplyChain') {
+                persona = "SupplyChainPro";
+                title = "Supply Chain Master";
+                desc = "La tua sfida è fuori dalle mura aziendali. Devi ingaggiare i fornitori.";
+                tasks = [
+                    "Caricare anagrafica fornitori",
+                    "Lanciare campagna di raccolta dati massiva",
+                    "Valutare scoring ESG dei fornitori critici"
+                ];
+            }
+
+            // Render
+            document.getElementById('resTitle').innerText = title;
+            document.getElementById('resDesc').innerText = desc;
+
+            const listContainer = document.getElementById('resList');
+            listContainer.innerHTML = '';
+            tasks.forEach(task => {
+                const li = document.createElement('li');
+                li.innerText = task;
+                listContainer.appendChild(li);
+            });
+        }
+    </script>
+</body>
+
+</html>
